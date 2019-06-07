@@ -4,7 +4,7 @@ Hive4Net is a library to run hive queries with Apache Thrift
 
 Examples :
 ------
-.. code-block:: c#
+.. 
 
     Hive hive = new Hive("localhost", 10001, "admin", "myPassword");
 	await hive.OpenAsync();
