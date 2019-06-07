@@ -1,0 +1,131 @@
+﻿using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Hive4Net.TCliService;
+using Thrift.Protocols;
+using Thrift.Protocols.Entities;
+using Thrift.Protocols.Utilities;
+
+namespace Hive4Net.Responses
+{
+    public partial class ExecuteStatementResp : TBase
+    {
+        private OperationHandle _operationHandle;
+
+        public Status Status { get; set; }
+
+        public OperationHandle OperationHandle
+        {
+            get
+            {
+                return _operationHandle;
+            }
+            set
+            {
+                _isSset.operationHandle = true;
+                this._operationHandle = value;
+            }
+        }
+
+        public Isset _isSset;
+
+        public struct Isset
+        {
+            public bool operationHandle;
+        }
+
+        public ExecuteStatementResp()
+        {
+        }
+
+        public ExecuteStatementResp(Status status) : this()
+        {
+            this.Status = status;
+        }
+
+        public async Task ReadAsync(TProtocol protocol, CancellationToken cancellationToken)
+        {
+            bool isset_status = false;
+            TField field;
+            await protocol.ReadStructBeginAsync(cancellationToken);
+            while (true)
+            {
+                field = await protocol.ReadFieldBeginAsync(cancellationToken);
+                if (field.Type == TType.Stop)
+                {
+                    break;
+                }
+                switch (field.ID)
+                {
+                    case 1:
+                        if (field.Type == TType.Struct)
+                        {
+                            Status = new Status();
+                            await Status.ReadAsync(protocol);
+                            isset_status = true;
+                        }
+                        else
+                        {
+                            await TProtocolUtil.SkipAsync(protocol, field.Type, cancellationToken);
+                        }
+                        break;
+
+                    case 2:
+                        if (field.Type == TType.Struct)
+                        {
+                            OperationHandle = new OperationHandle();
+                            await OperationHandle.ReadAsync(protocol);
+                        }
+                        else
+                        {
+                            await TProtocolUtil.SkipAsync(protocol, field.Type, cancellationToken);
+                        }
+                        break;
+
+                    default:
+                        await TProtocolUtil.SkipAsync(protocol, field.Type, cancellationToken);
+                        break;
+                }
+                await protocol.ReadFieldEndAsync(cancellationToken);
+            }
+            await protocol.ReadStructEndAsync(cancellationToken);
+            if (!isset_status)
+                throw new TProtocolException(TProtocolException.INVALID_DATA);
+        }
+
+        public async Task WriteAsync(TProtocol protocol, CancellationToken cancellationToken)
+        {
+            TStruct struc = new TStruct("TExecuteStatementResp");
+            await protocol.WriteStructBeginAsync(struc, cancellationToken);
+            TField field = new TField();
+            field.Name = "status";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            await protocol.WriteFieldBeginAsync(field, cancellationToken);
+            await Status.WriteAsync(protocol);
+            await protocol.WriteFieldEndAsync(cancellationToken);
+            if (OperationHandle != null && _isSset.operationHandle)
+            {
+                field.Name = "operationHandle";
+                field.Type = TType.Struct;
+                field.ID = 2;
+                await protocol.WriteFieldBeginAsync(field, cancellationToken);
+                await OperationHandle.WriteAsync(protocol);
+                await protocol.WriteFieldEndAsync(cancellationToken);
+            }
+            await protocol.WriteFieldStopAsync(cancellationToken);
+            await protocol.WriteStructEndAsync(cancellationToken);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder("TExecuteStatementResp(");
+            sb.Append("Status: ");
+            sb.Append(Status == null ? "<null>" : Status.ToString());
+            sb.Append(",OperationHandle: ");
+            sb.Append(OperationHandle == null ? "<null>" : OperationHandle.ToString());
+            sb.Append(")");
+            return sb.ToString();
+        }
+    }
+}
