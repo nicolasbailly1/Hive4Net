@@ -39,14 +39,12 @@ namespace Hive4Net.Datasets
                         if (field.Type == TType.Map)
                         {
                             NameToTypePtr = new Dictionary<string, int>();
-                            TMap _map10 = await protocol.ReadMapBeginAsync(cancellationToken);
-                            for (int _i11 = 0; _i11 < _map10.Count; ++_i11)
+                            TMap map = await protocol.ReadMapBeginAsync(cancellationToken);
+                            for (int i = 0; i < map.Count; ++i)
                             {
-                                string _key12;
-                                int _val13;
-                                _key12 = await protocol.ReadStringAsync(cancellationToken);
-                                _val13 = await protocol.ReadI32Async(cancellationToken);
-                                NameToTypePtr[_key12] = _val13;
+                                var key = await protocol.ReadStringAsync(cancellationToken);
+                                var val = await protocol.ReadI32Async(cancellationToken);
+                                NameToTypePtr[key] = val;
                             }
                             await protocol.ReadMapEndAsync(cancellationToken);
                             isset_nameToTypePtr = true;
@@ -72,16 +70,13 @@ namespace Hive4Net.Datasets
         {
             TStruct struc = new TStruct("TUnionTypeEntry");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "nameToTypePtr";
-            field.Type = TType.Map;
-            field.ID = 1;
+            TField field = new TField {Name = "nameToTypePtr", Type = TType.Map, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await protocol.WriteMapBeginAsync(new TMap(TType.String, TType.I32, NameToTypePtr.Count), cancellationToken);
-            foreach (string _iter14 in NameToTypePtr.Keys)
+            foreach (string key in NameToTypePtr.Keys)
             {
-                await protocol.WriteStringAsync(_iter14, cancellationToken);
-                await protocol.WriteI32Async(NameToTypePtr[_iter14], cancellationToken);
+                await protocol.WriteStringAsync(key, cancellationToken);
+                await protocol.WriteI32Async(NameToTypePtr[key], cancellationToken);
             }
             await protocol.WriteMapEndAsync(cancellationToken);
             await protocol.WriteFieldEndAsync(cancellationToken);

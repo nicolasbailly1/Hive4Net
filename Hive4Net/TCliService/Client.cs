@@ -39,7 +39,7 @@ namespace Hive4Net.TCliService
 
         #region " IDisposable Support "
 
-        private bool _IsDisposed;
+        private bool _isDisposed;
 
         // IDisposable
         public void Dispose()
@@ -49,7 +49,7 @@ namespace Hive4Net.TCliService
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_IsDisposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
@@ -59,7 +59,7 @@ namespace Hive4Net.TCliService
                 }
             }
 
-            _IsDisposed = true;
+            _isDisposed = true;
         }
 
         #endregion " IDisposable Support "

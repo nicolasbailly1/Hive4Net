@@ -73,16 +73,13 @@ namespace Hive4Net.Datasets
         {
             TStruct struc = new TStruct("TRow");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "colVals";
-            field.Type = TType.List;
-            field.ID = 1;
+            TField field = new TField {Name = "colVals", Type = TType.List, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             {
                 await protocol.WriteListBeginAsync(new TList(TType.Struct, ColVals.Count), cancellationToken);
-                foreach (ColumnValue _iter26 in ColVals)
+                foreach (ColumnValue columnValue in ColVals)
                 {
-                    await _iter26.WriteAsync(protocol, cancellationToken);
+                    await columnValue.WriteAsync(protocol, cancellationToken);
                 }
                 await protocol.WriteListEndAsync(cancellationToken);
             }

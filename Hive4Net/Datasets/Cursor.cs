@@ -17,13 +17,13 @@ namespace Hive4Net.Datasets
         private Client _client;
         private OperationHandle _operation;
         private TableSchema _lastSchema;
-        private ProtocolVersion m_Version;
+        private ProtocolVersion _version;
 
         public Cursor(SessionHandle session, Client client, ProtocolVersion version = ProtocolVersion.HIVE_CLI_SERVICE_PROTOCOL_V7)
         {
             this._session = session;
             this._client = client;
-            m_Version = version;
+            _version = version;
         }
 
 
@@ -71,7 +71,7 @@ namespace Hive4Net.Datasets
         private List<ExpandoObject> GetRows(List<string> names, RowSet rowSet)
         {
             List<ExpandoObject> result = new List<ExpandoObject>();
-            if (m_Version <= ProtocolVersion.HIVE_CLI_SERVICE_PROTOCOL_V5)
+            if (_version <= ProtocolVersion.HIVE_CLI_SERVICE_PROTOCOL_V5)
             {
                 result.AddRange(GetRowByRowBase(names, rowSet));
             }
@@ -200,7 +200,7 @@ namespace Hive4Net.Datasets
 
         public void Dispose()
         {
-            Dispose(true);
+            Dispose(true).Wait();
             GC.SuppressFinalize(this);
         }
     }

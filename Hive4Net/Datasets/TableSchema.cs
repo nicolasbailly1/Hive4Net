@@ -43,13 +43,12 @@ namespace Hive4Net.Datasets
                         {
                             {
                                 Columns = new List<ColumnDesc>();
-                                TList _list19 = await protocol.ReadListBeginAsync(cancellationToken);
-                                for (int _i20 = 0; _i20 < _list19.Count; ++_i20)
+                                TList list = await protocol.ReadListBeginAsync(cancellationToken);
+                                for (int i = 0; i < list.Count; ++i)
                                 {
-                                    ColumnDesc _elem21 = new ColumnDesc();
-                                    _elem21 = new ColumnDesc();
-                                    await _elem21.ReadAsync(protocol, cancellationToken);
-                                    Columns.Add(_elem21);
+                                    ColumnDesc desc = new ColumnDesc();
+                                    await desc.ReadAsync(protocol, cancellationToken);
+                                    Columns.Add(desc);
                                 }
                                 await protocol.ReadListEndAsync(cancellationToken);
                             }
@@ -75,16 +74,13 @@ namespace Hive4Net.Datasets
         {
             TStruct struc = new TStruct("TTableSchema");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "columns";
-            field.Type = TType.List;
-            field.ID = 1;
+            TField field = new TField {Name = "columns", Type = TType.List, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             {
                 await protocol.WriteListBeginAsync(new TList(TType.Struct, Columns.Count), cancellationToken);
-                foreach (ColumnDesc _iter22 in Columns)
+                foreach (ColumnDesc desc in Columns)
                 {
-                    await _iter22.WriteAsync(protocol, cancellationToken);
+                    await desc.WriteAsync(protocol, cancellationToken);
                 }
                 await protocol.WriteListEndAsync(cancellationToken);
             }

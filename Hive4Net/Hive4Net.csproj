@@ -9,6 +9,9 @@
     <PackageProjectUrl />
     <RepositoryUrl>https://github.com/nicolasbailly1/Hive4Net</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -15,7 +15,7 @@ namespace Hive4Net.ThriftSasl
             _password = password;
         }
 
-        public byte[] process(byte[] challenge)
+        public byte[] Process(byte[] challenge)
         {
             List<byte> result = new List<byte>();
             result.Add(_sign);

@@ -14,10 +14,7 @@ namespace Hive4Net.Datasets
 
         public FetchResultsReq Req
         {
-            get
-            {
-                return _req;
-            }
+            get => _req;
             set
             {
                 _isSet.req = true;

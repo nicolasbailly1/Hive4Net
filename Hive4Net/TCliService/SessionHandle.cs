@@ -42,10 +42,7 @@ namespace Hive4Net.TCliService
         {
             TStruct struc = new TStruct("TSessionHandle");
             await protocol.WriteStructBeginAsync(struc);
-            TField field = new TField();
-            field.Name = "sessionId";
-            field.Type = TType.Struct;
-            field.ID = 1;
+            TField field = new TField {Name = "sessionId", Type = TType.Struct, ID = 1};
             await protocol.WriteFieldBeginAsync(field);
             await SessionId.WriteAsync(protocol);
             await protocol.WriteFieldEndAsync();

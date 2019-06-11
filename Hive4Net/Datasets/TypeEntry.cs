@@ -20,10 +20,7 @@ namespace Hive4Net.Datasets
 
         public PrimitiveTypeEntry PrimitiveEntry
         {
-            get
-            {
-                return _primitiveEntry;
-            }
+            get => _primitiveEntry;
             set
             {
                 _isSet.primitiveEntry = true;
@@ -33,10 +30,7 @@ namespace Hive4Net.Datasets
 
         public ArrayTypeEntry ArrayEntry
         {
-            get
-            {
-                return _arrayEntry;
-            }
+            get => _arrayEntry;
             set
             {
                 _isSet.arrayEntry = true;
@@ -46,10 +40,7 @@ namespace Hive4Net.Datasets
 
         public MapTypeEntry MapEntry
         {
-            get
-            {
-                return _mapEntry;
-            }
+            get => _mapEntry;
             set
             {
                 _isSet.mapEntry = true;
@@ -59,10 +50,7 @@ namespace Hive4Net.Datasets
 
         public StructTypeEntry StructEntry
         {
-            get
-            {
-                return _structEntry;
-            }
+            get => _structEntry;
             set
             {
                 _isSet.structEntry = true;
@@ -72,10 +60,7 @@ namespace Hive4Net.Datasets
 
         public UnionTypeEntry UnionEntry
         {
-            get
-            {
-                return _unionEntry;
-            }
+            get => _unionEntry;
             set
             {
                 _isSet.unionEntry = true;
@@ -85,10 +70,7 @@ namespace Hive4Net.Datasets
 
         public UserDefinedTypeEntry UserDefinedTypeEntry
         {
-            get
-            {
-                return _userDefinedTypeEntry;
-            }
+            get => _userDefinedTypeEntry;
             set
             {
                 _isSet.userDefinedTypeEntry = true;

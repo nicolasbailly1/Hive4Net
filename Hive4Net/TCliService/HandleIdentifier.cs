@@ -50,10 +50,7 @@ namespace Hive4Net.TCliService
         {
             TStruct struc = new TStruct("THandleIdentifier");
             await protocol.WriteStructBeginAsync(struc);
-            TField field = new TField();
-            field.Name = "guid";
-            field.Type = TType.String;
-            field.ID = 1;
+            TField field = new TField {Name = "guid", Type = TType.String, ID = 1};
             await protocol.WriteFieldBeginAsync(field);
             await protocol.WriteBinaryAsync(Guid);
             await protocol.WriteFieldEndAsync();

@@ -61,10 +61,7 @@ namespace Hive4Net.Datasets
         {
             TStruct struc = new TStruct("TUserDefinedTypeEntry");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "typeClassName";
-            field.Type = TType.String;
-            field.ID = 1;
+            TField field = new TField {Name = "typeClassName", Type = TType.String, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await protocol.WriteStringAsync(TypeClassName, cancellationToken);
             await protocol.WriteFieldEndAsync(cancellationToken);

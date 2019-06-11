@@ -20,10 +20,7 @@ namespace Hive4Net.Datasets
 
         public BoolColumn BoolVal
         {
-            get
-            {
-                return _boolVal;
-            }
+            get => _boolVal;
             set
             {
                 _isSet.boolVal = true;
@@ -33,10 +30,7 @@ namespace Hive4Net.Datasets
 
         public ByteColumn ByteVal
         {
-            get
-            {
-                return _byteVal;
-            }
+            get => _byteVal;
             set
             {
                 _isSet.byteVal = true;
@@ -46,10 +40,7 @@ namespace Hive4Net.Datasets
 
         public I16Column I16Val
         {
-            get
-            {
-                return _i16Val;
-            }
+            get => _i16Val;
             set
             {
                 _isSet.i16Val = true;
@@ -59,10 +50,7 @@ namespace Hive4Net.Datasets
 
         public I32Column I32Val
         {
-            get
-            {
-                return _i32Val;
-            }
+            get => _i32Val;
             set
             {
                 _isSet.i32Val = true;
@@ -72,10 +60,7 @@ namespace Hive4Net.Datasets
 
         public I64Column I64Val
         {
-            get
-            {
-                return _i64Val;
-            }
+            get => _i64Val;
             set
             {
                 _isSet.i64Val = true;
@@ -85,10 +70,7 @@ namespace Hive4Net.Datasets
 
         public DoubleColumn DoubleVal
         {
-            get
-            {
-                return _doubleVal;
-            }
+            get => _doubleVal;
             set
             {
                 _isSet.doubleVal = true;
@@ -98,10 +80,7 @@ namespace Hive4Net.Datasets
 
         public StringColumn StringVal
         {
-            get
-            {
-                return _stringVal;
-            }
+            get => _stringVal;
             set
             {
                 _isSet.stringVal = true;
@@ -111,10 +90,7 @@ namespace Hive4Net.Datasets
 
         public BinaryColumn BinaryVal
         {
-            get
-            {
-                return _binaryVal;
-            }
+            get => _binaryVal;
             set
             {
                 _isSet.binaryVal = true;

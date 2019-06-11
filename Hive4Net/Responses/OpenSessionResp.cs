@@ -17,18 +17,11 @@ namespace Hive4Net.Responses
 
         public Status Status { get; set; }
 
-        /// <summary>
-        ///
-        /// <seealso cref="TProtocolVersion"/>
-        /// </summary>
         public ProtocolVersion ServerProtocolVersion { get; set; }
 
         public SessionHandle SessionHandle
         {
-            get
-            {
-                return _sessionHandle;
-            }
+            get => _sessionHandle;
             set
             {
                 _isSet.sessionHandle = true;
@@ -38,10 +31,7 @@ namespace Hive4Net.Responses
 
         public Dictionary<string, string> Configuration
         {
-            get
-            {
-                return _configuration;
-            }
+            get => _configuration;
             set
             {
                 _isSet.configuration = true;
@@ -125,14 +115,12 @@ namespace Hive4Net.Responses
                         {
                             {
                                 Configuration = new Dictionary<string, string>();
-                                TMap _map76 = await protocol.ReadMapBeginAsync(cancellationToken);
-                                for (int _i77 = 0; _i77 < _map76.Count; ++_i77)
+                                TMap map = await protocol.ReadMapBeginAsync(cancellationToken);
+                                for (int i = 0; i < map.Count; ++i)
                                 {
-                                    string _key78;
-                                    string _val79;
-                                    _key78 = await protocol.ReadStringAsync(cancellationToken);
-                                    _val79 = await protocol.ReadStringAsync(cancellationToken);
-                                    Configuration[_key78] = _val79;
+                                    var key = await protocol.ReadStringAsync(cancellationToken);
+                                    var val = await protocol.ReadStringAsync(cancellationToken);
+                                    Configuration[key] = val;
                                 }
                                 await protocol.ReadMapEndAsync(cancellationToken);
                             }
@@ -160,10 +148,7 @@ namespace Hive4Net.Responses
         {
             TStruct struc = new TStruct("TOpenSessionResp");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "status";
-            field.Type = TType.Struct;
-            field.ID = 1;
+            TField field = new TField {Name = "status", Type = TType.Struct, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await Status.WriteAsync(protocol);
             await protocol.WriteFieldEndAsync(cancellationToken);
@@ -190,10 +175,10 @@ namespace Hive4Net.Responses
                 await protocol.WriteFieldBeginAsync(field, cancellationToken);
                 {
                     await protocol.WriteMapBeginAsync(new TMap(TType.String, TType.String, Configuration.Count), cancellationToken);
-                    foreach (string _iter80 in Configuration.Keys)
+                    foreach (string key in Configuration.Keys)
                     {
-                        await protocol.WriteStringAsync(_iter80, cancellationToken);
-                        await protocol.WriteStringAsync(Configuration[_iter80], cancellationToken);
+                        await protocol.WriteStringAsync(key, cancellationToken);
+                        await protocol.WriteStringAsync(Configuration[key], cancellationToken);
                     }
                     await protocol.WriteMapEndAsync(cancellationToken);
                 }

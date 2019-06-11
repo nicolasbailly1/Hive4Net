@@ -7,9 +7,9 @@ namespace Hive4Net.TCliService
 {
     public class MemoryInputTransport : TClientTransport
     {
-        private byte[] buf_;
-        private int pos_;
-        private int endPos_;
+        private byte[] _buf;
+        private int _pos;
+        private int _endPos;
 
         public MemoryInputTransport()
         {
@@ -32,24 +32,21 @@ namespace Hive4Net.TCliService
 
         public void Reset(byte[] buf, int offset, int length)
         {
-            buf_ = buf;
-            pos_ = offset;
-            endPos_ = offset + length;
+            _buf = buf;
+            _pos = offset;
+            _endPos = offset + length;
         }
 
         public void Clear()
         {
-            buf_ = null;
+            _buf = null;
         }
 
         public override void Close()
         {
         }
 
-        public override bool IsOpen
-        {
-            get { return true; }
-        }
+        public override bool IsOpen => true;
 
         public override async Task OpenAsync(CancellationToken cancellationToken)
         {
@@ -65,7 +62,7 @@ namespace Hive4Net.TCliService
             int amtToRead = (len > bytesRemaining ? bytesRemaining : len);
             if (amtToRead > 0)
             {
-                Array.Copy(buf_, pos_, buf, off, amtToRead);
+                Array.Copy(_buf, _pos, buf, off, amtToRead);
                 ConsumeBuffer(amtToRead);
             }
             return amtToRead;
@@ -77,22 +74,16 @@ namespace Hive4Net.TCliService
 
         public byte[] GetBuffer()
         {
-            return buf_;
+            return _buf;
         }
 
-        public int GetBufferPosition
-        {
-            get { return pos_; }
-        }
+        public int GetBufferPosition => _pos;
 
-        public int GetBytesRemainingInBuffer
-        {
-            get { return endPos_ - pos_; }
-        }
+        public int GetBytesRemainingInBuffer => _endPos - _pos;
 
         public void ConsumeBuffer(int len)
         {
-            pos_ += len;
+            _pos += len;
         }
 
         protected override void Dispose(bool disposing)

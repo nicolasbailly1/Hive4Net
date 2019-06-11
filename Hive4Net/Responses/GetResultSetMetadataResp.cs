@@ -17,10 +17,7 @@ namespace Hive4Net.Responses
 
         public TableSchema Schema
         {
-            get
-            {
-                return _schema;
-            }
+            get => _schema;
             set
             {
                 _isSet.schema = true;
@@ -98,10 +95,7 @@ namespace Hive4Net.Responses
         {
             TStruct struc = new TStruct("TGetResultSetMetadataResp");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "status";
-            field.Type = TType.Struct;
-            field.ID = 1;
+            TField field = new TField {Name = "status", Type = TType.Struct, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await Status.WriteAsync(protocol);
             await protocol.WriteFieldEndAsync(cancellationToken);

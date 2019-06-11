@@ -20,10 +20,7 @@ namespace Hive4Net.Requests
 
         public Dictionary<string, string> ConfOverlay
         {
-            get
-            {
-                return _confOverlay;
-            }
+            get => _confOverlay;
             set
             {
                 _isSet.confOverlay = true;
@@ -33,10 +30,7 @@ namespace Hive4Net.Requests
 
         public bool RunAsync
         {
-            get
-            {
-                return _runAsync;
-            }
+            get => _runAsync;
             set
             {
                 _isSet.runAsync = true;
@@ -155,10 +149,7 @@ namespace Hive4Net.Requests
         {
             TStruct struc = new TStruct("TExecuteStatementReq");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "sessionHandle";
-            field.Type = TType.Struct;
-            field.ID = 1;
+            TField field = new TField {Name = "sessionHandle", Type = TType.Struct, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await SessionHandle.WriteAsync(protocol);
             await protocol.WriteFieldEndAsync(cancellationToken);
@@ -176,10 +167,10 @@ namespace Hive4Net.Requests
                 await protocol.WriteFieldBeginAsync(field, cancellationToken);
                 {
                     await protocol.WriteMapBeginAsync(new TMap(TType.String, TType.String, ConfOverlay.Count), cancellationToken);
-                    foreach (string _iter85 in ConfOverlay.Keys)
+                    foreach (string key in ConfOverlay.Keys)
                     {
-                        await protocol.WriteStringAsync(_iter85, cancellationToken);
-                        await protocol.WriteStringAsync(ConfOverlay[_iter85], cancellationToken);
+                        await protocol.WriteStringAsync(key, cancellationToken);
+                        await protocol.WriteStringAsync(ConfOverlay[key], cancellationToken);
                     }
                     await protocol.WriteMapEndAsync(cancellationToken);
                 }

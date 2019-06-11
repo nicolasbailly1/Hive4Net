@@ -20,10 +20,7 @@ namespace Hive4Net.TCliService
 
         public List<string> InfoMessages
         {
-            get
-            {
-                return _infoMessages;
-            }
+            get => _infoMessages;
             set
             {
                 _isSet.infoMessages = true;
@@ -33,10 +30,7 @@ namespace Hive4Net.TCliService
 
         public string SqlState
         {
-            get
-            {
-                return _sqlState;
-            }
+            get => _sqlState;
             set
             {
                 _isSet.sqlState = true;
@@ -46,10 +40,7 @@ namespace Hive4Net.TCliService
 
         public int ErrorCode
         {
-            get
-            {
-                return _errorCode;
-            }
+            get => _errorCode;
             set
             {
                 _isSet.errorCode = true;
@@ -59,10 +50,7 @@ namespace Hive4Net.TCliService
 
         public string ErrorMessage
         {
-            get
-            {
-                return _errorMessage;
-            }
+            get => _errorMessage;
             set
             {
                 _isSet.errorMessage = true;
@@ -169,10 +157,7 @@ namespace Hive4Net.TCliService
         {
             TStruct struc = new TStruct("TStatus");
             await protocol.WriteStructBeginAsync(struc);
-            TField field = new TField();
-            field.Name = "statusCode";
-            field.Type = TType.I32;
-            field.ID = 1;
+            TField field = new TField {Name = "statusCode", Type = TType.I32, ID = 1};
             await protocol.WriteFieldBeginAsync(field);
             await protocol.WriteI32Async((int)StatusCode);
             await protocol.WriteFieldEndAsync();
@@ -184,9 +169,9 @@ namespace Hive4Net.TCliService
                 await protocol.WriteFieldBeginAsync(field);
                 {
                     await protocol.WriteListBeginAsync(new TList(TType.String, InfoMessages.Count));
-                    foreach (string _iter70 in InfoMessages)
+                    foreach (string message in InfoMessages)
                     {
-                        await protocol.WriteStringAsync(_iter70);
+                        await protocol.WriteStringAsync(message);
                     }
                     await protocol.WriteListEndAsync();
                 }

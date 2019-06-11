@@ -22,10 +22,7 @@ namespace Hive4Net.Datasets
 
         public TypeQualifiers TypeQualifiers
         {
-            get
-            {
-                return _typeQualifiers;
-            }
+            get => _typeQualifiers;
             set
             {
                 _isSet.typeQualifiers = true;
@@ -101,10 +98,7 @@ namespace Hive4Net.Datasets
         {
             TStruct struc = new TStruct("TPrimitiveTypeEntry");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "type";
-            field.Type = TType.I32;
-            field.ID = 1;
+            TField field = new TField {Name = "type", Type = TType.I32, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await protocol.WriteI32Async((int)Type, cancellationToken);
             await protocol.WriteFieldEndAsync(cancellationToken);

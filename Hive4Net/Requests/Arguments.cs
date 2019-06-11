@@ -24,10 +24,7 @@ namespace Hive4Net.Requests
 
         public T Req
         {
-            get
-            {
-                return _req;
-            }
+            get => _req;
             set
             {
                 _isSet.req = true;

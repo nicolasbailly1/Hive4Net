@@ -21,10 +21,7 @@ namespace Hive4Net.Datasets
 
         public string Comment
         {
-            get
-            {
-                return _comment;
-            }
+            get => _comment;
             set
             {
                 _isSet.comment = true;
@@ -130,10 +127,7 @@ namespace Hive4Net.Datasets
         {
             TStruct struc = new TStruct("TColumnDesc");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "columnName";
-            field.Type = TType.String;
-            field.ID = 1;
+            TField field = new TField {Name = "columnName", Type = TType.String, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await protocol.WriteStringAsync(ColumnName, cancellationToken);
             await protocol.WriteFieldEndAsync(cancellationToken);

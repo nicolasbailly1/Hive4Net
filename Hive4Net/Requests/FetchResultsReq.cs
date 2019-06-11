@@ -105,10 +105,7 @@ namespace Hive4Net.Requests
         {
             TStruct struc = new TStruct("TFetchResultsReq");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "operationHandle";
-            field.Type = TType.Struct;
-            field.ID = 1;
+            TField field = new TField {Name = "operationHandle", Type = TType.Struct, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await OperationHandle.WriteAsync(protocol);
             await protocol.WriteFieldEndAsync(cancellationToken);

@@ -15,10 +15,6 @@ namespace Hive4Net.TCliService
 
         public HandleIdentifier OperationId { get; set; }
 
-        /// <summary>
-        /// 
-        /// <seealso cref="OperationType"/>
-        /// </summary>
         public OperationType OperationType { get; set; }
 
         public bool HasResultSet { get; set; }
@@ -132,10 +128,7 @@ namespace Hive4Net.TCliService
         {
             TStruct struc = new TStruct("TOperationHandle");
             await protocol.WriteStructBeginAsync(struc);
-            TField field = new TField();
-            field.Name = "operationId";
-            field.Type = TType.Struct;
-            field.ID = 1;
+            TField field = new TField {Name = "operationId", Type = TType.Struct, ID = 1};
             await protocol.WriteFieldBeginAsync(field);
             await OperationId.WriteAsync(protocol);
             await protocol.WriteFieldEndAsync();

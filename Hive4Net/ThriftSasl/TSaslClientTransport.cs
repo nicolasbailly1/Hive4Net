@@ -17,9 +17,10 @@ namespace Hive4Net.ThriftSasl
         protected static int STATUS_BYTES = 1;
         protected static int PAYLOAD_LENGTH_BYTES = 4;
         protected List<byte> statusBytes = new List<byte>() { ((byte)0x01), ((byte)0x02), ((byte)0x03), ((byte)0x04), ((byte)0x05) };
-        private bool _IsOpen = false;
-        private byte[] _MessageHeader = new byte[STATUS_BYTES + PAYLOAD_LENGTH_BYTES];
-        private ByteArrayOutputStream _WriteBuffer = new ByteArrayOutputStream();
+        private bool _isOpen = false;
+        private readonly byte[] _messageHeader = new byte[STATUS_BYTES + PAYLOAD_LENGTH_BYTES];
+        private readonly ByteArrayOutputStream _writeBuffer = new ByteArrayOutputStream();
+        private readonly MemoryInputTransport _readBuffer = new MemoryInputTransport();
 
         public TSaslClientTransport(TSocketClientTransport socket, string userName, string password)
         {
@@ -40,10 +41,7 @@ namespace Hive4Net.ThriftSasl
             _sasl.Dispose();
         }
 
-        public override bool IsOpen
-        {
-            get { return _IsOpen; }
-        }
+        public override bool IsOpen => _isOpen;
 
         public override async Task OpenAsync(CancellationToken cancellationToken)
         {
@@ -58,7 +56,7 @@ namespace Hive4Net.ThriftSasl
                     var result = await ReceiveSaslMsgAsync(cancellationToken);
                     if (result.Status == SaslStatus.COMPLETE)
                     {
-                        _IsOpen = true;
+                        _isOpen = true;
                         break;
                     }
                     else if (result.Status == SaslStatus.OK)
@@ -81,9 +79,9 @@ namespace Hive4Net.ThriftSasl
 
         public async Task SendSaslMsgAsync(SaslStatus status, byte[] body, CancellationToken cancellationToken)
         {
-            _MessageHeader[0] = statusBytes[(int)status - 1];
-            Utils.EncodeBigEndian(body.Length, _MessageHeader, STATUS_BYTES);
-            await _socket.WriteAsync(_MessageHeader, cancellationToken);
+            _messageHeader[0] = statusBytes[(int)status - 1];
+            Utils.EncodeBigEndian(body.Length, _messageHeader, STATUS_BYTES);
+            await _socket.WriteAsync(_messageHeader, cancellationToken);
             await _socket.WriteAsync(body, cancellationToken);
             await _socket.FlushAsync(cancellationToken);
         }
@@ -106,9 +104,9 @@ namespace Hive4Net.ThriftSasl
         public async Task<SaslMsg> ReceiveSaslMsgAsync(CancellationToken cancellationToken)
         {
             SaslMsg result = new SaslMsg();
-            await _socket.ReadAllAsync(_MessageHeader, 0, _MessageHeader.Length, cancellationToken);
-            result.Status = (SaslStatus)(statusBytes.IndexOf(_MessageHeader[0]) + 1);
-            byte[] body = new byte[Utils.DecodeBigEndian(_MessageHeader, STATUS_BYTES)];
+            await _socket.ReadAllAsync(_messageHeader, 0, _messageHeader.Length, cancellationToken);
+            result.Status = (SaslStatus)(statusBytes.IndexOf(_messageHeader[0]) + 1);
+            byte[] body = new byte[Utils.DecodeBigEndian(_messageHeader, STATUS_BYTES)];
             await _socket.ReadAllAsync(body, 0, body.Length, cancellationToken);
 
             result.Body = Encoding.UTF8.GetString(body);
@@ -129,15 +127,14 @@ namespace Hive4Net.ThriftSasl
             await _socket.WriteAsync(lenBuf, cancellationToken);
         }
 
-        MemoryInputTransport readBuffer = new MemoryInputTransport();
         public override async Task<int> ReadAsync(byte[] buf, int off, int len, CancellationToken cancellationToken)
         {
-            int length = await readBuffer.ReadAsync(buf, off, len, cancellationToken);
+            int length = await _readBuffer.ReadAsync(buf, off, len, cancellationToken);
             if (length > 0)
                 return length;
 
             await ReadFrameAsync(cancellationToken);
-            int i = await readBuffer.ReadAsync(buf, off, len, cancellationToken);
+            int i = await _readBuffer.ReadAsync(buf, off, len, cancellationToken);
             return i;
         }
 
@@ -150,19 +147,19 @@ namespace Hive4Net.ThriftSasl
             byte[] buff = new byte[dataLength];
             await _socket.ReadAllAsync(buff, 0, dataLength, cancellationToken);
             //string s = Encoding.UTF8.GetString(buff);
-            readBuffer.Reset(buff);
+            _readBuffer.Reset(buff);
         }
 
 
         public override async Task WriteAsync(byte[] buf, int off, int len, CancellationToken cancellationToken)
         {
-            _WriteBuffer.Write(buf, off, len);
+            _writeBuffer.Write(buf, off, len);
         }
 
         public override async Task FlushAsync(CancellationToken cancellationToken)
         {
-            byte[] buff = _WriteBuffer.GetBytes();
-            _WriteBuffer.Reset();
+            byte[] buff = _writeBuffer.GetBytes();
+            _writeBuffer.Reset();
             await WriteLengthAsync(buff.Length, cancellationToken);
            await _socket.WriteAsync(buff, 0, buff.Length, cancellationToken);
            await _socket.FlushAsync(cancellationToken);

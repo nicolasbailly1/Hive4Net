@@ -42,15 +42,15 @@ namespace Hive4Net.Datasets
                         if (field.Type == TType.Map)
                         {
                             Qualifiers = new Dictionary<string, TypeQualifierValue>();
-                            TMap _map0 = await protocol.ReadMapBeginAsync(cancellationToken);
-                            for (int _i1 = 0; _i1 < _map0.Count; ++_i1)
+                            TMap map = await protocol.ReadMapBeginAsync(cancellationToken);
+                            for (int i = 0; i < map.Count; ++i)
                             {
-                                string _key2;
-                                TypeQualifierValue _val3;
-                                _key2 = await protocol.ReadStringAsync(cancellationToken);
-                                _val3 = new TypeQualifierValue();
-                                await _val3.ReadAsync(protocol, cancellationToken);
-                                Qualifiers[_key2] = _val3;
+                                string key;
+                                TypeQualifierValue val;
+                                key = await protocol.ReadStringAsync(cancellationToken);
+                                val = new TypeQualifierValue();
+                                await val.ReadAsync(protocol, cancellationToken);
+                                Qualifiers[key] = val;
                             }
                             await protocol.ReadMapEndAsync(cancellationToken);
                             isset_qualifiers = true;
@@ -75,10 +75,7 @@ namespace Hive4Net.Datasets
         {
             TStruct struc = new TStruct("TTypeQualifiers");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "qualifiers";
-            field.Type = TType.Map;
-            field.ID = 1;
+            TField field = new TField {Name = "qualifiers", Type = TType.Map, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             {
                 await protocol.WriteMapBeginAsync(new TMap(TType.String, TType.Struct, Qualifiers.Count), cancellationToken);

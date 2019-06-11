@@ -4,12 +4,12 @@ namespace Hive4Net.ThriftSasl
 {
     public class SaslClient : IDisposable
     {
-        PlainMechanism _chose_mechanism;
+        PlainMechanism _choseMechanism;
 
         public SaslClient(string host, PlainMechanism mechanism)
         {
             this.Mechanism = mechanism.Name;
-            _chose_mechanism = mechanism;
+            _choseMechanism = mechanism;
 
         }
 
@@ -21,12 +21,12 @@ namespace Hive4Net.ThriftSasl
 
         public byte[] process(byte[] challenge)
         {
-            return _chose_mechanism.process(challenge);
+            return _choseMechanism.Process(challenge);
         }
 
         public void Dispose()
         {
-            _chose_mechanism = null;
+            _choseMechanism = null;
         }
     }
 }

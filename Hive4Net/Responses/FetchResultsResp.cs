@@ -18,10 +18,7 @@ namespace Hive4Net.Responses
 
         public bool HasMoreRows
         {
-            get
-            {
-                return _hasMoreRows;
-            }
+            get => _hasMoreRows;
             set
             {
                 _isSet.hasMoreRows = true;
@@ -31,10 +28,7 @@ namespace Hive4Net.Responses
 
         public RowSet Results
         {
-            get
-            {
-                return _results;
-            }
+            get => _results;
             set
             {
                 _isSet.results = true;
@@ -124,10 +118,7 @@ namespace Hive4Net.Responses
         {
             TStruct struc = new TStruct("TFetchResultsResp");
             await protocol.WriteStructBeginAsync(struc, CancellationToken.None);
-            TField field = new TField();
-            field.Name = "status";
-            field.Type = TType.Struct;
-            field.ID = 1;
+            TField field = new TField {Name = "status", Type = TType.Struct, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await Status.WriteAsync(protocol);
             await protocol.WriteFieldEndAsync(cancellationToken);

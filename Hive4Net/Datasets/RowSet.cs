@@ -18,10 +18,7 @@ namespace Hive4Net.Datasets
 
         public List<Column> Columns
         {
-            get
-            {
-                return _columns;
-            }
+            get => _columns;
             set
             {
                 _isSet.columns = true;
@@ -133,10 +130,7 @@ namespace Hive4Net.Datasets
         {
             TStruct struc = new TStruct("TRowSet");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "startRowOffset";
-            field.Type = TType.I64;
-            field.ID = 1;
+            TField field = new TField {Name = "startRowOffset", Type = TType.I64, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await protocol.WriteI64Async(StartRowOffset, cancellationToken);
             await protocol.WriteFieldEndAsync(cancellationToken);
@@ -146,9 +140,9 @@ namespace Hive4Net.Datasets
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             {
                 await protocol.WriteListBeginAsync(new TList(TType.Struct, Rows.Count), cancellationToken);
-                foreach (Row _iter65 in Rows)
+                foreach (Row row in Rows)
                 {
-                   await _iter65.WriteAsync(protocol, cancellationToken);
+                   await row.WriteAsync(protocol, cancellationToken);
                 }
                 await protocol.WriteListEndAsync(cancellationToken);
             }
@@ -161,9 +155,9 @@ namespace Hive4Net.Datasets
                 await protocol.WriteFieldBeginAsync(field, cancellationToken);
                 {
                     await protocol.WriteListBeginAsync(new TList(TType.Struct, Columns.Count), cancellationToken);
-                    foreach (Column _iter66 in Columns)
+                    foreach (Column column in Columns)
                     {
-                        await _iter66.WriteAsync(protocol, cancellationToken);
+                        await column.WriteAsync(protocol, cancellationToken);
                     }
                     await protocol.WriteListEndAsync(cancellationToken);
                 }

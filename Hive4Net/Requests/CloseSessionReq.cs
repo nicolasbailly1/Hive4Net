@@ -63,10 +63,7 @@ namespace Hive4Net.Requests
         {
             TStruct struc = new TStruct("TCloseSessionReq");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "sessionHandle";
-            field.Type = TType.Struct;
-            field.ID = 1;
+            TField field = new TField {Name = "sessionHandle", Type = TType.Struct, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await SessionHandle.WriteAsync(protocol);
             await protocol.WriteFieldEndAsync(cancellationToken);

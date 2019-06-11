@@ -14,18 +14,11 @@ namespace Hive4Net.Requests
         private string _password;
         private Dictionary<string, string> _configuration;
 
-        /// <summary>
-        ///
-        /// <seealso cref="TProtocolVersion"/>
-        /// </summary>
-        public ProtocolVersion Client_protocol { get; set; }
+        public ProtocolVersion ClientProtocol { get; set; }
 
         public string Username
         {
-            get
-            {
-                return _username;
-            }
+            get => _username;
             set
             {
                 _isSet.username = true;
@@ -35,10 +28,7 @@ namespace Hive4Net.Requests
 
         public string Password
         {
-            get
-            {
-                return _password;
-            }
+            get => _password;
             set
             {
                 _isSet.password = true;
@@ -48,10 +38,7 @@ namespace Hive4Net.Requests
 
         public Dictionary<string, string> Configuration
         {
-            get
-            {
-                return _configuration;
-            }
+            get => _configuration;
             set
             {
                 _isSet.configuration = true;
@@ -70,12 +57,12 @@ namespace Hive4Net.Requests
 
         public OpenSessionRequest()
         {
-            this.Client_protocol = ProtocolVersion.HIVE_CLI_SERVICE_PROTOCOL_V6;
+            this.ClientProtocol = ProtocolVersion.HIVE_CLI_SERVICE_PROTOCOL_V6;
         }
 
-        public OpenSessionRequest(ProtocolVersion client_protocol) : this()
+        public OpenSessionRequest(ProtocolVersion clientProtocol) : this()
         {
-            this.Client_protocol = client_protocol;
+            this.ClientProtocol = clientProtocol;
         }
 
         public async Task ReadAsync(TProtocol protocol, CancellationToken cancellationToken)
@@ -95,7 +82,7 @@ namespace Hive4Net.Requests
                     case 1:
                         if (field.Type == TType.I32)
                         {
-                            Client_protocol = (ProtocolVersion)await protocol.ReadI32Async(cancellationToken);
+                            ClientProtocol = (ProtocolVersion)await protocol.ReadI32Async(cancellationToken);
                             isset_client_protocol = true;
                         }
                         else
@@ -131,14 +118,12 @@ namespace Hive4Net.Requests
                         {
                             {
                                 Configuration = new Dictionary<string, string>();
-                                TMap _map71 = await protocol.ReadMapBeginAsync(cancellationToken);
-                                for (int _i72 = 0; _i72 < _map71.Count; ++_i72)
+                                TMap map = await protocol.ReadMapBeginAsync(cancellationToken);
+                                for (int i = 0; i < map.Count; ++i)
                                 {
-                                    string _key73;
-                                    string _val74;
-                                    _key73 = await protocol.ReadStringAsync(cancellationToken);
-                                    _val74 = await protocol.ReadStringAsync(cancellationToken);
-                                    Configuration[_key73] = _val74;
+                                    var key = await protocol.ReadStringAsync(cancellationToken);
+                                    var val = await protocol.ReadStringAsync(cancellationToken);
+                                    Configuration[key] = val;
                                 }
                                 await protocol.ReadMapEndAsync(cancellationToken);
                             }
@@ -164,12 +149,9 @@ namespace Hive4Net.Requests
         {
             TStruct struc = new TStruct("TOpenSessionReq");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "client_protocol";
-            field.Type = TType.I32;
-            field.ID = 1;
+            TField field = new TField {Name = "clientProtocol", Type = TType.I32, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
-            await protocol.WriteI32Async((int)Client_protocol, cancellationToken);
+            await protocol.WriteI32Async((int)ClientProtocol, cancellationToken);
             await protocol.WriteFieldEndAsync(cancellationToken);
             if (Username != null && _isSet.username)
             {
@@ -197,10 +179,10 @@ namespace Hive4Net.Requests
                 await protocol.WriteFieldBeginAsync(field, cancellationToken);
                 {
                     await protocol.WriteMapBeginAsync(new TMap(TType.String, TType.String, Configuration.Count), cancellationToken);
-                    foreach (string _iter75 in Configuration.Keys)
+                    foreach (string key in Configuration.Keys)
                     {
-                        await protocol.WriteStringAsync(_iter75, cancellationToken);
-                        await protocol.WriteStringAsync(Configuration[_iter75], cancellationToken);
+                        await protocol.WriteStringAsync(key, cancellationToken);
+                        await protocol.WriteStringAsync(Configuration[key], cancellationToken);
                     }
                     await protocol.WriteMapEndAsync(cancellationToken);
                 }

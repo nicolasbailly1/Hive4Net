@@ -16,10 +16,7 @@ namespace Hive4Net.Datasets
 
         public int I32Value
         {
-            get
-            {
-                return _i32Value;
-            }
+            get => _i32Value;
             set
             {
                 _isSet.i32Value = true;
@@ -29,10 +26,7 @@ namespace Hive4Net.Datasets
 
         public string StringValue
         {
-            get
-            {
-                return _stringValue;
-            }
+            get => _stringValue;
             set
             {
                 _isSet.stringValue = true;

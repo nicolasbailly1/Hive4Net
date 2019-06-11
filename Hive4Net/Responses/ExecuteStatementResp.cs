@@ -16,10 +16,7 @@ namespace Hive4Net.Responses
 
         public OperationHandle OperationHandle
         {
-            get
-            {
-                return _operationHandle;
-            }
+            get => _operationHandle;
             set
             {
                 _isSset.operationHandle = true;
@@ -97,10 +94,7 @@ namespace Hive4Net.Responses
         {
             TStruct struc = new TStruct("TExecuteStatementResp");
             await protocol.WriteStructBeginAsync(struc, cancellationToken);
-            TField field = new TField();
-            field.Name = "status";
-            field.Type = TType.Struct;
-            field.ID = 1;
+            TField field = new TField {Name = "status", Type = TType.Struct, ID = 1};
             await protocol.WriteFieldBeginAsync(field, cancellationToken);
             await Status.WriteAsync(protocol);
             await protocol.WriteFieldEndAsync(cancellationToken);
