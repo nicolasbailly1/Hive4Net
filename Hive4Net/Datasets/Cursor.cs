@@ -168,7 +168,7 @@ namespace Hive4Net.Datasets
             return resultsResp.Results;
         }
 
-        private async Task<List<string>> GetColumnNamesAsync()
+        public async Task<List<string>> GetColumnNamesAsync()
         {
             var schema = await GetSchemaAsync();
             return schema?.Columns.Select(i => i.ColumnName).ToList();

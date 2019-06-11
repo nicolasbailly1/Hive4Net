@@ -6,6 +6,9 @@
     <Authors>Nicolas Bailly</Authors>
     <Company>DCube</Company>
     <Description>Run Hive queries with Apache Thrift</Description>
+    <PackageProjectUrl />
+    <RepositoryUrl>https://github.com/nicolasbailly1/Hive4Net</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
